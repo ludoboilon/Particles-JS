@@ -1,80 +1,80 @@
-const canvas = document.getElementById('myCanvas');
-const ctx = canvas.getContext('2d');
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
 ctx.canvas.width = window.innerWidth;
 ctx.canvas.height = window.innerHeight;
 let particleTab;
+let colors = ["blue", "gold", "red", "#8ada55"];
 
 class Particle {
-    constructor(x, y, directionX, directionY, size, color) {
-        this.x = x;
-        this.y = y;
-        this.directionX = directionX;
-        this.directionY = directionY;
-        this.size = size;
-        this.color = color;
-    }
+	constructor(x, y, directionX, directionY, size, color) {
+		this.x = x;
+		this.y = y;
+		this.directionX = directionX;
+		this.directionY = directionY;
+		this.size = size;
+		this.color = color;
+	}
 
-    drawIt() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-    }
+	drawIt() {
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+		ctx.fillStyle = this.color;
+		ctx.fill();
+	}
 
-    MAJ() {
-        if(this.x + this.size > canvas.width || this.x - this.size < 0) {
-            this.directionX = this.directionX;
-        }
-        if(this.y + this.size > canvas.height || this.y - this.size < 0) {
-            this.directionY = this.directionY;
-        }
-        this.x += this.directionX;
-        this.y += this.directionY;
-        this.drawIt();
-    }
+	MAJ() {
+		if (this.x + this.size > canvas.width || this.x - this.size < 0) {
+			this.directionX = this.directionX;
+		}
+		if (this.y + this.size > canvas.height || this.y - this.size < 0) {
+			this.directionY = this.directionY;
+		}
+		this.x += this.directionX;
+		this.y += this.directionY;
+		this.drawIt();
+	}
 }
 
-// const obj1 = new Particle(200,200,50,50,100,"black");
+// const obj1 = new Particle(200, 200, 50, 50, 100, "black");
 // console.log(obj1);
 // obj1.drawIt();
 
 function init() {
-    particleTab = [];
-    for(let i = 0; i < 100; i++) {
-        let size = (Math.random() + 0.01) * 20;
-        let x = Math.random() * (window.innerWidth - size * 2);
-        let y = Math.random() * (window.innerHeight - size * 2);
-        let directionX = (Math.random() * 0.4) - 0.2;
-        let directionY = (Math.random() * 0.4) - 0.2;
-        let color = "lightgray";
+	particleTab = [];
+	for (let i = 0; i < 100; i++) {
+		let size = (Math.random() + 0.01) * 20;
+		let x = Math.random() * (window.innerWidth - size * 2);
+		let y = Math.random() * (window.innerHeight - size * 2);
+		let directionX = Math.random() * 0.4 - 0.2;
+		let directionY = Math.random() * 0.4 - 0.2;
+		let color = colors[Math.floor(Math.random() * 4)];
 
-        particleTab.push(new Particle(x,y,directionX, directionY,size,color));
-    }
+		particleTab.push(new Particle(x, y, directionX, directionY, size, color));
+	}
 }
 
 function animation() {
-    requestAnimationFrame(animation);
-    ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+	requestAnimationFrame(animation);
+	ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-    for(let i = 0; i < particleTab.length; i++) {
-        particleTab[i].MAJ();
-    }
+	for (let i = 0; i < particleTab.length; i++) {
+		particleTab[i].MAJ();
+	}
 }
 
 init();
 animation();
-console.log(particleTab)
+console.log(particleTab);
 
 function resize() {
-    init();
-    animation();
+	init();
+	animation();
 }
 
-
 let doit;
-window.addEventListener('resize', () => {
-    clearTimeout(doit);
-    doit = setTimeout(resize, 100);
-    ctx.canvas.width = window.innerWidth;
-    ctx.canvas.height = window.innerHeight;
-})
+window.addEventListener("resize", () => {
+	clearTimeout(doit);
+	doit = setTimeout(resize, 100);
+	ctx.canvas.width = window.innerWidth;
+	ctx.canvas.height = window.innerHeight;
+});
